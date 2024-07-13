@@ -4,22 +4,92 @@ Hello World
 =======
 <html>
 <script src='https://d3js.org/d3.v5.min.js'></script>
-<style> path {stroke: black;}</style>
-<body>
+<style> circle {fill: lightblue; stroke: black;} </style>
+<body onload='init()'>
 <svg width=300 height=300>
 </svg>
 <script>
-var data = [4,8,15,16,23,42];
-var color = ['pink','lightyellow','lightgreen','lightcyan','lightblue','violet'];
-var pie = d3.pie();
+async function init() {
+    const data = await d3.csv('https://flunky.github.io/cars2017.csv');
 
-d3.selectAll("path")
-.data(pie(data))
-.enter()
-.append("path")
- .attr("d", arc)
- .attr("fill", function(d, i) {return color[i];});
+    data.forEach(d => {
+        d.AverageCityMPG = +d.AverageCityMPG;
+        d.AverageHighwayMPG = +d.AverageHighwayMPG;
+        d.Cylinders = +d.Cylinders;
+    });
 
+    // Set up the SVG canvas dimensions
+    const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+    const width = 800 - margin.left - margin.right;
+    const height = 800 - margin.top - margin.bottom;
+
+    // Append the SVG canvas to the body of the page
+    const svg = d3.select("#chart")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    // Set the scales
+    const xScale = d3.scaleLog()
+            .domain([10, 150])
+            .range([0, width]);
+
+    const yScale = d3.scaleLog()
+            .domain([10, 150])
+            .range([height, 0]);
+
+    // Set the axis
+    const xAxis = d3.axisBottom(xScale)
+            .tickValues([10, 20, 50, 100])
+            .tickFormat(d3.format("~s"));
+
+    const yAxis = d3.axisLeft(yScale)
+            .tickValues([10, 20, 50, 100])
+            .tickFormat(d3.format("~s"));
+
+    // Add the axes to the SVG
+    svg.append("g")
+        .attr("transform", "translate(0, height)")
+        .call(xAxis);
+
+    svg.append("g")
+        .call(yAxis);
+
+    // Add the points to the scatter plot
+    svg.selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", d => xScale(d.AverageCityMPG))
+        .attr("cy", d => yScale(d.AverageHighwayMPG))
+        .attr("r", d => 2 + d.Cylinders);
+
+    // Add labels to the axes
+    svg.append("text")
+        .attr("text-anchor", "end")
+        .attr("x", width)
+        .attr("y", height + margin.top + 20)
+        .text("Average City MPG");
+
+    svg.append("text")
+        .attr("text-anchor", "end")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -margin.left + 20)
+        .attr("x", -margin.top)
+        .text("Average Highway MPG");
+
+    // Add title to the plot
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", -10)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "16px")
+        .attr("font-weight", "bold")
+        .text("Average City MPG vs. Average Highway MPG (2017 Cars)");
+
+}
 </script>
 </body>
 </html>
