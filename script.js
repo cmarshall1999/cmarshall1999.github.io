@@ -42,13 +42,13 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
         // Exit
         bars.exit()
             .transition()
-            .duration(300)
+            .duration(100)
             .attr("width", 0)
             .remove();
 
         // Update
         bars.transition()
-            .duration(300)
+            .duration(100)
             .attr("y", d => y(d.player))
             .attr("width", d => x(d.cumulative_goals))
             .attr("height", y.bandwidth());
@@ -61,18 +61,18 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
             .attr("height", y.bandwidth())
             .attr("width", 0)
             .transition()
-            .duration(300)
+            .duration(100)
             .attr("width", d => x(d.cumulative_goals));
 
         // Update the axes
         svg.select(".x.axis")
             .transition()
-            .duration(300)
+            .duration(100)
             .call(xAxis);
 
         svg.select(".y.axis")
             .transition()
-            .duration(300)
+            .duration(100)
             .call(yAxis);
     }
 
