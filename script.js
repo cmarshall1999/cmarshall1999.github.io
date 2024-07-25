@@ -1,5 +1,5 @@
 // Load the JSON data
-d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
+d3.json('top_goal_scorers_cumulative_goals_by_year.json').then(data => {
     // Set up the SVG canvas dimensions
     const margin = { top: 40, right: 20, bottom: 50, left: 100 };
     const width = 960 - margin.left - margin.right;
@@ -14,6 +14,7 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
     // Set up the scales
     const x = d3.scaleLinear().range([0, width]);
     const y = d3.scaleBand().range([0, height]).padding(0.1);
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
 
     // Set up the axes
     const xAxis = d3.axisBottom(x);
@@ -26,6 +27,15 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
 
     svg.append("g")
         .attr("class", "y axis");
+
+    // Add a text element to display the year
+    const yearText = svg.append("text")
+        .attr("class", "year")
+        .attr("x", width / 2)
+        .attr("y", -10)
+        .attr("text-anchor", "middle")
+        .style("font-size", "24px")
+        .style("font-weight", "bold");
 
     // Function to update the chart for a given year
     function update(year) {
@@ -42,16 +52,17 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
         // Exit
         bars.exit()
             .transition()
-            .duration(100)
+            .duration(300)
             .attr("width", 0)
             .remove();
 
         // Update
         bars.transition()
-            .duration(100)
+            .duration(300)
             .attr("y", d => y(d.player))
             .attr("width", d => x(d.cumulative_goals))
-            .attr("height", y.bandwidth());
+            .attr("height", y.bandwidth())
+            .attr("fill", d => color(d.player));
 
         // Enter
         bars.enter().append("rect")
@@ -60,20 +71,24 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
             .attr("y", d => y(d.player))
             .attr("height", y.bandwidth())
             .attr("width", 0)
+            .attr("fill", d => color(d.player))
             .transition()
-            .duration(100)
+            .duration(300)
             .attr("width", d => x(d.cumulative_goals));
 
         // Update the axes
         svg.select(".x.axis")
             .transition()
-            .duration(100)
+            .duration(300)
             .call(xAxis);
 
         svg.select(".y.axis")
             .transition()
-            .duration(100)
+            .duration(300)
             .call(yAxis);
+
+        // Update the year text
+        yearText.text(year);
     }
 
     // Function to loop through the years and update the chart
@@ -81,7 +96,7 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
     function loopYears() {
         update(data[yearIndex].year);
         yearIndex = (yearIndex + 1) % data.length;
-        setTimeout(loopYears, 2000);
+        setTimeout(loopYears, 500);  // 0.5 seconds
     }
 
     // Start the loop
