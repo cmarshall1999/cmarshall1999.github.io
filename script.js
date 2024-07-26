@@ -1,104 +1,112 @@
-// Load the JSON data
-d3.json('top_goal_scorers_cumulative_goals_by_year.json').then(data => {
-    // Set up the SVG canvas dimensions
-    const margin = { top: 40, right: 20, bottom: 50, left: 100 };
-    const width = 960 - margin.left - margin.right;
-    const height = 600 - margin.top - margin.bottom;
+// Set up the initial state
+let currentScene = 0;
+const scenes = ['#scene1', '#scene2', '#scene3', '#scene4'];
 
-    const svg = d3.select("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
+// Function to show a scene
+function showScene(index) {
+    d3.selectAll('.scene').classed('active', false);
+    d3.select(scenes[index]).classed('active', true);
+}
 
-    // Set up the scales
-    const x = d3.scaleLinear().range([0, width]);
-    const y = d3.scaleBand().range([0, height]).padding(0.1);
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
+// Function to handle the next button click
+function nextScene() {
+    currentScene = (currentScene + 1) % scenes.length;
+    showScene(currentScene);
+}
 
-    // Set up the axes
-    const xAxis = d3.axisBottom(x);
-    const yAxis = d3.axisLeft(y);
+// Function to handle the previous button click
+function prevScene() {
+    currentScene = (currentScene - 1 + scenes.length) % scenes.length;
+    showScene(currentScene);
+}
 
-    // Add the axes to the SVG
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", `translate(0,${height})`);
+// Attach event listeners to buttons
+document.getElementById('next').addEventListener('click', nextScene);
+document.getElementById('prev').addEventListener('click', prevScene);
 
-    svg.append("g")
-        .attr("class", "y axis");
+// Initially show the first scene
+showScene(currentScene);
 
-    // Add a text element to display the year
-    const yearText = svg.append("text")
-        .attr("class", "year")
-        .attr("x", width / 2)
-        .attr("y", -10)
-        .attr("text-anchor", "middle")
-        .style("font-size", "24px")
-        .style("font-weight", "bold");
+// Data for each scene (these would be loaded from your data sources)
+const dataScene1 = [...]; // Number of games per year
+const dataScene2 = [...]; // Number of unique teams per year
+const dataScene3 = [...]; // Top goal-scoring players
+const dataScene4 = [...]; // Top goal-scoring countries
 
-    // Function to update the chart for a given year
-    function update(year) {
-        const yearData = data.find(d => d.year === year).top_scorers;
+// Load the JSON data for games per year
+d3.json('games_per_year.json').then(data => {
+    const formattedData = Object.keys(data).map(year => ({
+        year: new Date(year),
+        number_of_games: data[year].number_of_games
+    }));
 
-        // Update the scales
-        x.domain([0, d3.max(yearData, d => d.cumulative_goals)]);
-        y.domain(yearData.map(d => d.player));
-
-        // Join the data
-        const bars = svg.selectAll(".bar")
-            .data(yearData, d => d.player);
-
-        // Exit
-        bars.exit()
-            .transition()
-            .duration(300)
-            .attr("width", 0)
-            .remove();
-
-        // Update
-        bars.transition()
-            .duration(300)
-            .attr("y", d => y(d.player))
-            .attr("width", d => x(d.cumulative_goals))
-            .attr("height", y.bandwidth())
-            .attr("fill", d => color(d.player));
-
-        // Enter
-        bars.enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", 0)
-            .attr("y", d => y(d.player))
-            .attr("height", y.bandwidth())
-            .attr("width", 0)
-            .attr("fill", d => color(d.player))
-            .transition()
-            .duration(300)
-            .attr("width", d => x(d.cumulative_goals));
-
-        // Update the axes
-        svg.select(".x.axis")
-            .transition()
-            .duration(300)
-            .call(xAxis);
-
-        svg.select(".y.axis")
-            .transition()
-            .duration(300)
-            .call(yAxis);
-
-        // Update the year text
-        yearText.text(year);
-    }
-
-    // Function to loop through the years and update the chart
-    let yearIndex = 0;
-    function loopYears() {
-        update(data[yearIndex].year);
-        yearIndex = (yearIndex + 1) % data.length;
-        setTimeout(loopYears, 500);  // 0.5 seconds
-    }
-
-    // Start the loop
-    loopYears();
+    drawScene1(formattedData);
 });
+
+// Function to draw the first scene
+function drawScene1(data) {
+    const svg = d3.select('#scene1');
+    const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+    const width = +svg.attr("width") - margin.left - margin.right;
+    const height = +svg.attr("height") - margin.top - margin.bottom;
+    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleTime().rangeRound([0, width]);
+    const y = d3.scaleLinear().rangeRound([height, 0]);
+
+    const line = d3.line()
+        .x(d => x(d.year))
+        .y(d => y(d.number_of_games));
+
+    x.domain(d3.extent(data, d => d.year));
+    y.domain(d3.extent(data, d => d.number_of_games));
+
+    g.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(x))
+        .select(".domain")
+        .remove();
+
+    g.append("g")
+        .call(d3.axisLeft(y))
+        .append("text")
+        .attr("fill", "#000")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "end")
+        .text("Number of Games");
+
+    g.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
+        .attr("stroke-width", 1.5)
+        .attr("d", line);
+}
+
+// Function to draw the second scene
+function drawScene2(data) {
+    const svg = d3.select('#scene2');
+    // Your D3 code for drawing the second scene (e.g., line chart)
+}
+
+// Function to draw the third scene
+function drawScene3(data) {
+    const svg = d3.select('#scene3');
+    // Your D3 code for drawing the third scene (e.g., bar chart)
+}
+
+// Function to draw the fourth scene
+function drawScene4(data) {
+    const svg = d3.select('#scene4');
+    // Your D3 code for drawing the fourth scene (e.g., bar chart)
+}
+
+// Load data and draw scenes
+drawScene1(dataScene1);
+drawScene2(dataScene2);
+drawScene3(dataScene3);
+drawScene4(dataScene4);
