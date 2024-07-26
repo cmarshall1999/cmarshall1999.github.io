@@ -4,6 +4,7 @@ const scenes = ['#scene1', '#scene2', '#scene3', '#scene4'];
 
 // Function to show a scene
 function showScene(index) {
+    console.log("Showing scene:", index);  // Debugging
     d3.selectAll('.scene').classed('active', false);
     d3.select(scenes[index]).classed('active', true);
 }
@@ -29,26 +30,39 @@ showScene(currentScene);
 
 // Load the JSON data for games per year
 d3.json('data/games_per_year.json').then(data => {
-    const formattedData = Object.keys(data).map(year => ({
-        year: new Date(year),
-        number_of_games: data[year].number_of_games
-    }));
-
-    drawScene1(formattedData);
+    try {
+        const formattedData = Object.keys(data).map(year => ({
+            year: new Date(year),
+            number_of_games: data[year].number_of_games
+        }));
+        console.log("Games per year data loaded:", formattedData);  // Debugging
+        drawScene1(formattedData);
+    } catch (error) {
+        console.error("Error processing games per year data:", error);
+    }
+}).catch(error => {
+    console.error("Error loading games per year data:", error);
 });
 
 // Load the JSON data for unique teams per year
 d3.json('data/unique_teams_per_year.json').then(data => {
-    const formattedData = Object.keys(data).map(year => ({
-        year: new Date(year),
-        number_of_unique_teams: data[year].number_of_unique_teams
-    }));
-
-    drawScene2(formattedData);
+    try {
+        const formattedData = Object.keys(data).map(year => ({
+            year: new Date(year),
+            number_of_unique_teams: data[year].number_of_unique_teams
+        }));
+        console.log("Unique teams per year data loaded:", formattedData);  // Debugging
+        drawScene2(formattedData);
+    } catch (error) {
+        console.error("Error processing unique teams per year data:", error);
+    }
+}).catch(error => {
+    console.error("Error loading unique teams per year data:", error);
 });
 
 // Function to draw the first scene
 function drawScene1(data) {
+    console.log("Drawing scene 1");  // Debugging
     const svg = d3.select('#scene1');
     const margin = { top: 20, right: 20, bottom: 30, left: 50 };
     const width = +svg.attr("width") - margin.left - margin.right;
@@ -63,7 +77,7 @@ function drawScene1(data) {
         .y(d => y(d.number_of_games));
 
     x.domain(d3.extent(data, d => d.year));
-    y.domain(d3.extent(data, d => d.number_of_games));
+    y.domain([0, d3.max(data, d => d.number_of_games)]);
 
     g.append("g")
         .attr("transform", `translate(0,${height})`)
@@ -81,7 +95,7 @@ function drawScene1(data) {
         .attr("text-anchor", "end")
         .text("Number of Games");
 
-    g.append("path")
+    const path = g.append("path")
         .datum(data)
         .attr("fill", "none")
         .attr("stroke", "steelblue")
@@ -89,10 +103,21 @@ function drawScene1(data) {
         .attr("stroke-linecap", "round")
         .attr("stroke-width", 1.5)
         .attr("d", line);
+
+    // Add transitions
+    const totalLength = path.node().getTotalLength();
+    path
+        .attr("stroke-dasharray", totalLength + " " + totalLength)
+        .attr("stroke-dashoffset", totalLength)
+        .transition()
+        .duration(2000)
+        .ease(d3.easeLinear)
+        .attr("stroke-dashoffset", 0);
 }
 
 // Function to draw the second scene
 function drawScene2(data) {
+    console.log("Drawing scene 2");  // Debugging
     const svg = d3.select('#scene2');
     const margin = { top: 20, right: 20, bottom: 30, left: 50 };
     const width = +svg.attr("width") - margin.left - margin.right;
@@ -107,7 +132,7 @@ function drawScene2(data) {
         .y(d => y(d.number_of_unique_teams));
 
     x.domain(d3.extent(data, d => d.year));
-    y.domain(d3.extent(data, d => d.number_of_unique_teams));
+    y.domain([0, d3.max(data, d => d.number_of_unique_teams)]);
 
     g.append("g")
         .attr("transform", `translate(0,${height})`)
@@ -125,7 +150,7 @@ function drawScene2(data) {
         .attr("text-anchor", "end")
         .text("Number of Unique Teams");
 
-    g.append("path")
+    const path = g.append("path")
         .datum(data)
         .attr("fill", "none")
         .attr("stroke", "steelblue")
@@ -133,4 +158,14 @@ function drawScene2(data) {
         .attr("stroke-linecap", "round")
         .attr("stroke-width", 1.5)
         .attr("d", line);
+
+    // Add transitions
+    const totalLength = path.node().getTotalLength();
+    path
+        .attr("stroke-dasharray", totalLength + " " + totalLength)
+        .attr("stroke-dashoffset", totalLength)
+        .transition()
+        .duration(2000)
+        .ease(d3.easeLinear)
+        .attr("stroke-dashoffset", 0);
 }
