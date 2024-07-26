@@ -69,8 +69,8 @@ function drawScene1(data) {
     const height = +svg.attr("height") - margin.top - margin.bottom;
     const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const x = d3.scaleTime().rangeRound([0, width]);
-    const y = d3.scaleLinear().rangeRound([height, 0]);
+    const x = d3.scaleTime().range([0, width]);
+    const y = d3.scaleLinear().range([height, 0]);
 
     const line = d3.line()
         .x(d => x(d.year))
@@ -110,7 +110,7 @@ function drawScene1(data) {
         .attr("stroke-dasharray", totalLength + " " + totalLength)
         .attr("stroke-dashoffset", totalLength)
         .transition()
-        .duration(2000)
+        .duration(200)
         .ease(d3.easeLinear)
         .attr("stroke-dashoffset", 0);
 }
@@ -124,8 +124,8 @@ function drawScene2(data) {
     const height = +svg.attr("height") - margin.top - margin.bottom;
     const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const x = d3.scaleTime().rangeRound([0, width]);
-    const y = d3.scaleLinear().rangeRound([height, 0]);
+    const x = d3.scaleTime().range([0, width]);
+    const y = d3.scaleLinear().range([height, 0]);
 
     const line = d3.line()
         .x(d => x(d.year))
@@ -165,7 +165,7 @@ function drawScene2(data) {
         .attr("stroke-dasharray", totalLength + " " + totalLength)
         .attr("stroke-dashoffset", totalLength)
         .transition()
-        .duration(2000)
+        .duration(200)
         .ease(d3.easeLinear)
         .attr("stroke-dashoffset", 0);
 }
