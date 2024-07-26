@@ -3,20 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Top Goal Scorers Over Time</title>
+    <title>Soccer History Visualization</title>
     <style>
         body {
             font-family: Arial, sans-serif;
         }
-        svg {
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
+        .scene {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+        .annotation {
+            font-size: 14px;
+            fill: red;
         }
     </style>
 </head>
 <body>
-    <h1>Top Goal Scorers Over Time</h1>
-    <svg width="960" height="600"></svg>
+    <h1>Soccer History Visualization</h1>
+    <div id="container">
+        <svg id="scene1" class="scene" width="960" height="600"></svg>
+        <svg id="scene2" class="scene" width="960" height="600"></svg>
+        <svg id="scene3" class="scene" width="960" height="600"></svg>
+        <svg id="scene4" class="scene" width="960" height="600"></svg>
+    </div>
+    <button id="prev">Previous</button>
+    <button id="next">Next</button>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="script.js"></script>
 </body>
