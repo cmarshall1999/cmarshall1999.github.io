@@ -28,7 +28,7 @@ document.getElementById('prev').addEventListener('click', prevScene);
 showScene(currentScene);
 
 // Load the JSON data for games per year
-d3.json('games_per_year.json').then(data => {
+d3.json('data/games_per_year.json').then(data => {
     const formattedData = Object.keys(data).map(year => ({
         year: new Date(year),
         number_of_games: data[year].number_of_games
@@ -38,7 +38,7 @@ d3.json('games_per_year.json').then(data => {
 });
 
 // Load the JSON data for unique teams per year
-d3.json('unique_teams_per_year.json').then(data => {
+d3.json('data/unique_teams_per_year.json').then(data => {
     const formattedData = Object.keys(data).map(year => ({
         year: new Date(year),
         number_of_unique_teams: data[year].number_of_unique_teams
