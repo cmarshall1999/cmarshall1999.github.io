@@ -36,8 +36,8 @@ d3.csv('data/games_per_year.csv').then(data => {
         const yearData = data.filter(d => d.year.getFullYear() <= year);
         console.log("Filtered year data:", yearData);  // Debugging
 
-        x.domain(d3.extent(data, d => d.year));
-        y.domain([0, d3.max(data, d => d.number_of_games)]);
+        x.domain(d3.extent(yearData, d => d.year));
+        y.domain([0, d3.max(yearData, d => d.number_of_games)]);
 
         g.selectAll("*").remove();  // Clear previous content
 
