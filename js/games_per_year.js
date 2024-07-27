@@ -27,24 +27,49 @@ d3.csv('data/games_per_year.csv').then(data => {
     let yearIndex = 0;
     let isPaused = false;
 
-    function update(year) {
+    function update(year, prevYear) {
         yearDisplay.text(`Year: ${year}`);
 
         console.log("Updating for year:", year);
 
-        const yearData = data.filter(d => d.year.getFullYear() <= year);
+        const yearData = data.filter(d => d.year.getFullYear() <= year && d.year.getFullYear() > prevYear);
         console.log("Filtered year data:", yearData);  // Debugging
 
-        x.domain(d3.extent(yearData, d => d.year));
-        y.domain([0, d3.max(yearData, d => d.number_of_games)]);
+        x.domain(d3.extent(data, d => d.year));
+        y.domain([0, d3.max(data, d => d.number_of_games)]);
 
-        g.selectAll("*").remove();  // Clear previous content
+        const path = g.selectAll(".line")
+            .data([yearData], d => d.year);
+
+        path.enter()
+            .append("path")
+            .attr("class", "line")
+            .attr("fill", "none")
+            .attr("stroke", "steelblue")
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 1.5)
+            .merge(path)
+            .attr("d", line)
+            .attr("stroke-dasharray", function() { return this.getTotalLength() + " " + this.getTotalLength(); })
+            .attr("stroke-dashoffset", function() { return this.getTotalLength(); })
+            .transition()
+            .duration(2000)
+            .ease(d3.easeLinear)
+            .attr("stroke-dashoffset", 0);
+
+        path.exit().remove();
+
+        g.select(".x.axis").remove();
+        g.select(".y.axis").remove();
 
         g.append("g")
+            .attr("class", "x axis")
             .attr("transform", `translate(0,${height})`)
             .call(d3.axisBottom(x));
 
         g.append("g")
+            .attr("class", "y axis")
             .call(d3.axisLeft(y))
             .append("text")
             .attr("fill", "#000")
@@ -53,35 +78,18 @@ d3.csv('data/games_per_year.csv').then(data => {
             .attr("dy", "0.71em")
             .attr("text-anchor", "end")
             .text("Number of Games");
-
-        const path = g.append("path")
-            .datum(yearData)
-            .attr("fill", "none")
-            .attr("stroke", "steelblue")
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round")
-            .attr("stroke-width", 1.5)
-            .attr("d", line);
-
-        // Add transitions
-        const totalLength = path.node().getTotalLength();
-        path
-            .attr("stroke-dasharray", totalLength + " " + totalLength)
-            .attr("stroke-dashoffset", totalLength)
-            .transition()
-            .duration(2000)
-            .ease(d3.easeLinear)
-            .attr("stroke-dashoffset", 0);
     }
 
     function nextYear() {
+        const prevYear = years[yearIndex];
         yearIndex = (yearIndex + 1) % years.length;
-        update(years[yearIndex]);
+        update(years[yearIndex], prevYear);
     }
 
     function prevYear() {
+        const prevYear = years[yearIndex];
         yearIndex = (yearIndex - 1 + years.length) % years.length;
-        update(years[yearIndex]);
+        update(years[yearIndex], prevYear);
     }
 
     let interval;
@@ -113,6 +121,6 @@ d3.csv('data/games_per_year.csv').then(data => {
         window.location.href = "index.html";
     });
 
-    update(years[yearIndex]);
+    update(years[yearIndex], 0);  // Initial update with a starting year
     play();
 }).catch(showError);
