@@ -26,7 +26,15 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
 
     function update(year) {
         yearDisplay.text(`Year: ${year}`);
-        const yearData = data.find(d => d.year === year).top_scorers;
+        // Debugging
+        console.log("Updating for year:", year);
+
+        const yearDataEntry = data.find(d => d.year === year);
+        if (!yearDataEntry) {
+            console.error(`No data found for year: ${year}`);
+            return;
+        }
+        const yearData = yearDataEntry.top_scorers;
 
         x.domain([0, d3.max(yearData, d => d.cumulative_goals)]);
         y.domain(yearData.map(d => d.player));
