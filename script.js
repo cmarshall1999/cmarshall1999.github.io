@@ -29,7 +29,7 @@ document.getElementById('prev').addEventListener('click', prevScene);
 showScene(currentScene);
 
 // Load the JSON data for games per year
-d3.json('games_per_year.json').then(data => {
+d3.json('data/games_per_year.json').then(data => {
     try {
         const formattedData = Object.keys(data).map(year => ({
             year: new Date(year),
@@ -45,7 +45,7 @@ d3.json('games_per_year.json').then(data => {
 });
 
 // Load the JSON data for unique teams per year
-d3.json('unique_teams_per_year.json').then(data => {
+d3.json('data/unique_teams_per_year.json').then(data => {
     try {
         const formattedData = Object.keys(data).map(year => ({
             year: new Date(year),
@@ -61,7 +61,7 @@ d3.json('unique_teams_per_year.json').then(data => {
 });
 
 // Load the JSON data for top goal scorers by year
-d3.json('top_goal_scorers_cumulative_goals_by_year.json').then(data => {
+d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
     try {
         console.log("Top goal scorers data loaded:", data);  // Debugging
         drawScene3(data);
