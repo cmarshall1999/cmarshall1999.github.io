@@ -1,4 +1,6 @@
 d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
+    console.log("Loaded data:", data);  // Debugging
+
     const svg = d3.select('#topGoalScorers');
     const margin = { top: 40, right: 20, bottom: 50, left: 100 };
     const width = 960 - margin.left - margin.right;
@@ -18,7 +20,8 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
     g.append("g")
         .attr("class", "y axis");
 
-    const yearDisplay = d3.select("#yearDisplay").style("text-align", "center").style("font-size", "24px");
+    const yearDisplay = d3.select("#yearDisplay");
+    const annotation = d3.select("#annotation");
 
     const years = [1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020, 2024];
     let yearIndex = 0;
@@ -26,7 +29,26 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
 
     function update(year) {
         yearDisplay.text(`Year: ${year}`);
-        // Debugging
+
+        // Example annotations for each year
+        const annotations = {
+            1920: "The early years of organized football.",
+            1930: "First FIFA World Cup held in Uruguay.",
+            1940: "World War II impacts global sports.",
+            1950: "Post-war recovery and football resurgence.",
+            1960: "Football becomes a global phenomenon.",
+            1970: "Pele's final World Cup appearance.",
+            1980: "Rise of European football clubs.",
+            1990: "Football globalization and commercial success.",
+            2000: "The era of modern football stars.",
+            2010: "Rise of social media and football.",
+            2020: "Football during the COVID-19 pandemic.",
+            2024: "Upcoming major tournaments and events."
+        };
+
+        const annotationText = annotations[year] || "No annotation for this year.";
+        annotation.text(annotationText);
+
         console.log("Updating for year:", year);
 
         const yearDataEntry = data.find(d => d.year === year);
@@ -107,6 +129,11 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
         isPaused = false;
         d3.select("#pause").text("Pause");
         play();
+    });
+
+    // Home button functionality
+    d3.select("#home").on("click", () => {
+        window.location.href = "index.html";
     });
 
     update(years[yearIndex]);
