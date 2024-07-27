@@ -20,7 +20,7 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
 
     const yearDisplay = d3.select("#yearDisplay").style("text-align", "center").style("font-size", "24px");
 
-    const years = [1872, 1880, 1890, 1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020, 2024];
+    const years = [1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020, 2024];
     let yearIndex = 0;
     let isPaused = false;
 
