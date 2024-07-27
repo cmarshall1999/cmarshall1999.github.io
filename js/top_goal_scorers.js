@@ -18,7 +18,14 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
     g.append("g")
         .attr("class", "y axis");
 
+    const yearDisplay = d3.select("#yearDisplay").style("text-align", "center").style("font-size", "24px");
+
+    const years = [1872, 1880, 1890, 1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020, 2024];
+    let yearIndex = 0;
+    let isPaused = false;
+
     function update(year) {
+        yearDisplay.text(`Year: ${year}`);
         const yearData = data.find(d => d.year === year).top_scorers;
 
         x.domain([0, d3.max(yearData, d => d.cumulative_goals)]);
@@ -60,14 +67,40 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
             .call(yAxis);
     }
 
-    // Function to loop through the years and update the chart
-    let yearIndex = 0;
-    function loopYears() {
-        update(data[yearIndex].year);
-        yearIndex = (yearIndex + 1) % data.length;
-        setTimeout(loopYears, 2000);
+    function nextYear() {
+        yearIndex = (yearIndex + 1) % years.length;
+        update(years[yearIndex]);
     }
 
-    // Start the loop
-    loopYears();
+    function prevYear() {
+        yearIndex = (yearIndex - 1 + years.length) % years.length;
+        update(years[yearIndex]);
+    }
+
+    let interval;
+    function play() {
+        if (interval) clearInterval(interval);
+        interval = setInterval(() => {
+            if (!isPaused) {
+                nextYear();
+            }
+        }, 2000);
+    }
+
+    function pause() {
+        isPaused = !isPaused;
+        d3.select("#pause").text(isPaused ? "Resume" : "Pause");
+    }
+
+    d3.select("#prev").on("click", prevYear);
+    d3.select("#next").on("click", nextYear);
+    d3.select("#pause").on("click", pause);
+    d3.select("#play").on("click", () => {
+        isPaused = false;
+        d3.select("#pause").text("Pause");
+        play();
+    });
+
+    update(years[yearIndex]);
+    play();
 }).catch(showError);
