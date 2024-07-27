@@ -27,9 +27,6 @@ d3.csv('data/games_per_year.csv').then(data => {
     let yearIndex = 0;
     let isPaused = false;
 
-    // Initialize previous year data as empty array
-    let prevYearData = [];
-
     function update(year) {
         yearDisplay.text(`Year: ${year}`);
 
@@ -42,41 +39,13 @@ d3.csv('data/games_per_year.csv').then(data => {
         x.domain(d3.extent(data, d => d.year));
         y.domain([0, d3.max(data, d => d.number_of_games)]);
 
-        // Append new data points to the previously drawn data
-        const combinedData = [...prevYearData, ...yearData];
-
-        const path = g.selectAll(".line")
-            .data([combinedData], d => d.year);
-
-        path.enter()
-            .append("path")
-            .attr("class", "line")
-            .attr("fill", "none")
-            .attr("stroke", "steelblue")
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round")
-            .attr("stroke-width", 1.5)
-            .merge(path)
-            .attr("d", line)
-            .attr("stroke-dasharray", function() { return this.getTotalLength() + " " + this.getTotalLength(); })
-            .attr("stroke-dashoffset", function() { return this.getTotalLength(); })
-            .transition()
-            .duration(2000)
-            .ease(d3.easeLinear)
-            .attr("stroke-dashoffset", 0);
-
-        path.exit().remove();
-
-        g.select(".x.axis").remove();
-        g.select(".y.axis").remove();
+        g.selectAll("*").remove();  // Clear previous content
 
         g.append("g")
-            .attr("class", "x axis")
             .attr("transform", `translate(0,${height})`)
             .call(d3.axisBottom(x));
 
         g.append("g")
-            .attr("class", "y axis")
             .call(d3.axisLeft(y))
             .append("text")
             .attr("fill", "#000")
@@ -86,8 +55,14 @@ d3.csv('data/games_per_year.csv').then(data => {
             .attr("text-anchor", "end")
             .text("Number of Games");
 
-        // Update previous year data
-        prevYearData = combinedData;
+        g.append("path")
+            .datum(yearData)
+            .attr("fill", "none")
+            .attr("stroke", "steelblue")
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 1.5)
+            .attr("d", line);
     }
 
     function nextYear() {
