@@ -4,13 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unique Teams Per Year</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="common.js"></script>
+    <script src="unique_teams_per_year.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        svg {
+            display: block;
+            margin: 0 auto;
+        }
+        #yearDisplay {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Unique Teams Per Year</h1>
-    <svg id="uniqueTeamsPerYear" width="960" height="600"></svg>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="js/common.js"></script>
-    <script src="js/unique_teams_per_year.js"></script>
+    <h1 style="text-align: center;">Unique Teams Per Year</h1>
+    <div id="controls">
+        <button id="home">Home</button>
+        <button id="prev">Previous</button>
+        <button id="pause">Pause</button>
+        <button id="play">Play</button>
+        <button id="next">Next</button>
+    </div>
+    <div id="yearDisplay">Year: </div>
+    <svg id="uniqueTeamsPerYear" width="960" height="500"></svg>
 </body>
 </html>
