@@ -26,6 +26,13 @@ d3.json('data/games_per_year.json').then(data => {
         console.log("Updating for year:", year);
 
         const yearData = data.filter(d => new Date(d.year).getFullYear() <= year);
+        console.log("Filtered year data:", yearData);  // Debugging
+
+        // Ensure yearData contains valid dates and numbers
+        yearData.forEach(d => {
+            d.year = new Date(d.year);
+            d.number_of_games = +d.number_of_games;
+        });
 
         x.domain(d3.extent(yearData, d => d.year));
         y.domain([0, d3.max(yearData, d => d.number_of_games)]);
