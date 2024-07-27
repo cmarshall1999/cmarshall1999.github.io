@@ -187,45 +187,4 @@ function drawScene3(data) {
     console.log("Drawing scene 3");  // Debugging
     const svg = d3.select('#scene3');
     const margin = { top: 20, right: 20, bottom: 30, left: 150 };
-    const width = +svg.attr("width") - margin.left - margin.right;
-    const height = +svg.attr("height") - margin.top - margin.bottom;
-    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-
-    const x = d3.scaleLinear().range([0, width]);
-    const y = d3.scaleBand().range([0, height]).padding(0.1);
-
-    const xAxis = d3.axisBottom(x);
-    const yAxis = d3.axisLeft(y);
-
-    g.append("g")
-        .attr("class", "x axis")
-        .attr("transform", `translate(0,${height})`);
-
-    g.append("g")
-        .attr("class", "y axis");
-
-    function update(year) {
-        const yearData = data.find(d => d.year === year).top_scorers;
-
-        x.domain([0, d3.max(yearData, d => d.cumulative_goals)]);
-        y.domain(yearData.map(d => d.player));
-
-        const bars = g.selectAll(".bar")
-            .data(yearData, d => d.player);
-
-        bars.exit()
-            .transition()
-            .duration(100)
-            .attr("width", 0)
-            .remove();
-
-        bars.transition()
-            .duration(100)
-            .attr("y", d => y(d.player))
-            .attr("width", d => x(d.cumulative_goals))
-            .attr("height", y.bandwidth());
-
-        bars.enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", 0)
-            .attr("y", d => y
+    const width = +svg.attr("width") - margin.left - margin.right
