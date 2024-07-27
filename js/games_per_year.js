@@ -27,19 +27,26 @@ d3.csv('data/games_per_year.csv').then(data => {
     let yearIndex = 0;
     let isPaused = false;
 
-    function update(year, prevYear) {
+    // Initialize previous year data as empty array
+    let prevYearData = [];
+
+    function update(year) {
         yearDisplay.text(`Year: ${year}`);
 
         console.log("Updating for year:", year);
 
-        const yearData = data.filter(d => d.year.getFullYear() <= year && d.year.getFullYear() > prevYear);
+        // Filter the data up to the current year
+        const yearData = data.filter(d => d.year.getFullYear() <= year);
         console.log("Filtered year data:", yearData);  // Debugging
 
         x.domain(d3.extent(data, d => d.year));
         y.domain([0, d3.max(data, d => d.number_of_games)]);
 
+        // Append new data points to the previously drawn data
+        const combinedData = [...prevYearData, ...yearData];
+
         const path = g.selectAll(".line")
-            .data([yearData], d => d.year);
+            .data([combinedData], d => d.year);
 
         path.enter()
             .append("path")
@@ -78,18 +85,19 @@ d3.csv('data/games_per_year.csv').then(data => {
             .attr("dy", "0.71em")
             .attr("text-anchor", "end")
             .text("Number of Games");
+
+        // Update previous year data
+        prevYearData = combinedData;
     }
 
     function nextYear() {
-        const prevYear = years[yearIndex];
         yearIndex = (yearIndex + 1) % years.length;
-        update(years[yearIndex], prevYear);
+        update(years[yearIndex]);
     }
 
     function prevYear() {
-        const prevYear = years[yearIndex];
         yearIndex = (yearIndex - 1 + years.length) % years.length;
-        update(years[yearIndex], prevYear);
+        update(years[yearIndex]);
     }
 
     let interval;
@@ -121,6 +129,6 @@ d3.csv('data/games_per_year.csv').then(data => {
         window.location.href = "index.html";
     });
 
-    update(years[yearIndex], 0);  // Initial update with a starting year
+    update(years[yearIndex]);  // Initial update with a starting year
     play();
 }).catch(showError);
