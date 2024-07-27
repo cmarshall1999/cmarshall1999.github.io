@@ -2,9 +2,9 @@ d3.json('data/games_per_year.json').then(rawData => {
     console.log("Loaded data:", rawData);  // Debugging
 
     // Convert the raw data object to an array
-    const data = Object.keys(rawData).map(year => ({
+    const data = Object.entries(rawData).map(([year, value]) => ({
         year: new Date(year),
-        number_of_games: rawData[year].number_of_games
+        number_of_games: value.number_of_games
     }));
     console.log("Converted data:", data);  // Debugging
 
