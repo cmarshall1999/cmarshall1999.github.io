@@ -1,12 +1,12 @@
-d3.json('data/games_per_year.json').then(rawData => {
-    console.log("Loaded data:", rawData);  // Debugging
+d3.csv('data/games_per_year.csv').then(data => {
+    console.log("Loaded data:", data);  // Debugging
 
-    // Convert the raw data object to an array
-    const data = Object.entries(rawData).map(([year, value]) => ({
-        year: new Date(year),
-        number_of_games: value.number_of_games
-    }));
-    console.log("Converted data:", data);  // Debugging
+    // Process the CSV data
+    data.forEach(d => {
+        d.year = new Date(d.year);
+        d.number_of_games = +d.number_of_games;
+    });
+    console.log("Processed data:", data);  // Debugging
 
     const svg = d3.select('#gamesPerYear');
     const margin = { top: 20, right: 20, bottom: 30, left: 50 };
