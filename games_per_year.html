@@ -5,9 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games Per Year</title>
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            text-align: center;
+        }
+        #controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        #controls button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        #yearDisplay {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        svg {
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
     <h1>Games Per Year</h1>
+    <div id="controls">
+        <button id="home">Home</button>
+        <button id="prev">Previous</button>
+        <button id="pause">Pause</button>
+        <button id="play">Play</button>
+        <button id="next">Next</button>
+    </div>
+    <div id="yearDisplay"></div>
     <svg id="gamesPerYear" width="960" height="600"></svg>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="js/common.js"></script>
