@@ -1,5 +1,12 @@
-d3.json('data/games_per_year.json').then(data => {
-    console.log("Loaded data:", data);  // Debugging
+d3.json('data/games_per_year.json').then(rawData => {
+    console.log("Loaded data:", rawData);  // Debugging
+
+    // Convert the raw data object to an array
+    const data = Object.keys(rawData).map(year => ({
+        year: new Date(year),
+        number_of_games: rawData[year].number_of_games
+    }));
+    console.log("Converted data:", data);  // Debugging
 
     const svg = d3.select('#gamesPerYear');
     const margin = { top: 20, right: 20, bottom: 30, left: 50 };
@@ -25,14 +32,8 @@ d3.json('data/games_per_year.json').then(data => {
 
         console.log("Updating for year:", year);
 
-        const yearData = data.filter(d => new Date(d.year).getFullYear() <= year);
+        const yearData = data.filter(d => d.year.getFullYear() <= year);
         console.log("Filtered year data:", yearData);  // Debugging
-
-        // Ensure yearData contains valid dates and numbers
-        yearData.forEach(d => {
-            d.year = new Date(d.year);
-            d.number_of_games = +d.number_of_games;
-        });
 
         x.domain(d3.extent(yearData, d => d.year));
         y.domain([0, d3.max(yearData, d => d.number_of_games)]);
