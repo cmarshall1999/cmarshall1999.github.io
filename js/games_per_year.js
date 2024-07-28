@@ -80,7 +80,7 @@ d3.csv('data/games_per_year.csv').then(data => {
                     .duration(200)
                     .style("opacity", .9);
                 tooltip.html(`Year: ${d.year.getFullYear()}<br>Games: ${d.number_of_games}`)
-                    .style("left", (event.pageX + 5) + "px")
+                    .style("left", (event.pageX + 15) + "px")
                     .style("top", (event.pageY - 28) + "px");
             })
             .on("mouseout", function() {
