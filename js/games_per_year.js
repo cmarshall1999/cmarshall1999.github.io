@@ -21,6 +21,10 @@ d3.csv('data/games_per_year.csv').then(data => {
         .x(d => x(d.year))
         .y(d => y(d.number_of_games));
 
+    const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
     const yearDisplay = d3.select("#yearDisplay");
 
     const years = [1880, 1890, 1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020, 2024];
@@ -63,6 +67,27 @@ d3.csv('data/games_per_year.csv').then(data => {
             .attr("stroke-linecap", "round")
             .attr("stroke-width", 1.5)
             .attr("d", line);
+
+        g.selectAll("circle")
+            .data(yearData)
+            .enter().append("circle")
+            .attr("cx", d => x(d.year))
+            .attr("cy", d => y(d.number_of_games))
+            .attr("r", 3)
+            .attr("fill", "red")
+            .on("mouseover", function(event, d) {
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                tooltip.html(`Year: ${d.year.getFullYear()}<br>Games: ${d.number_of_games}`)
+                    .style("left", (event.pageX + 5) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", function() {
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            });
     }
 
     function nextYear() {
