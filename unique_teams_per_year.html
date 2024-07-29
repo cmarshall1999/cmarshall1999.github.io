@@ -13,9 +13,27 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
         }
         h1 {
             text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        h3 {
+            text-align: center;
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        p {
+            text-align: center;
+            font-size: 1em;
+            max-width: 800px;
+            margin: 5px 0;
+            line-height: 1.5;
         }
         #controls, #navigation {
             display: flex;
@@ -26,14 +44,25 @@
             margin: 0 10px;
             padding: 10px 20px;
             font-size: 16px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #controls button:hover, #navigation button:hover {
+            background: #0056b3;
         }
         #yearDisplay {
             text-align: center;
             font-size: 24px;
             margin-bottom: 20px;
+            font-weight: bold;
         }
         svg {
             margin: auto;
+            background: white;
+            border: 1px solid #ccc;
         }
         .tooltip {
             position: absolute;
@@ -52,13 +81,13 @@
 <body>
     <h1>Unique Teams Per Year</h1>
     <h3>
-        This page allows you to explore the evolution of international soccer through the years - from a burgeoning game to a global spectacle! From the first game in 1872 between England and Scotland, soccer has grown into the most popular sport in the world. That can best be personified by the number of countries field teams each year. This chart allows you to explore the evolution of the sport through the lense of growing the game to new locations.
+        This page allows you to explore the evolution of international soccer through the years - from a burgeoning game to a global spectacle! From the first game in 1872 between England and Scotland, soccer has grown into the most popular sport in the world. That can best be personified by the number of countries field teams each year. This chart allows you to explore the evolution of the sport through the lens of growing the game to new locations.
     </h3>
     <p>
-        Tip: This chart can be watched or user controled! If you wish to pause on a specific year, simply press "Pause", then "Play" again when you wish to continue. While you are paused, navigate forward and backwards through the years with the "Previous" and "Next" buttons.
+        Tip: This chart can be watched or user controlled! If you wish to pause on a specific year, simply press "Pause", then "Play" again when you wish to continue. While you are paused, navigate forward and backwards through the years with the "Previous" and "Next" buttons.
     </p>
     <p>
-        Tip: This chart includes tooltips! Hovever over a datapoint to learn how many national teams played a game that year.
+        Tip: This chart includes tooltips! Hover over a datapoint to learn how many national teams played a game that year.
     </p>
     <p>
         Tip: When you have finished with this scene, navigate through the rest of the scenes using the "Home", "Previous Page", and "Next Page" buttons.
@@ -73,8 +102,8 @@
     <svg id="uniqueTeamsPerYear" width="960" height="500"></svg>
     <div id="navigation">
         <button id="home">Home</button>
-        <button id="prevPage">Previous Page</button>
-        <button id="nextPage">Next Page</button>
+        <button id="prevPage">Previous Page: Home</button>
+        <button id="nextPage">Next Page: Games Per Year</button>
     </div>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="js/unique_teams_per_year.js"></script>
