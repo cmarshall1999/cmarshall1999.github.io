@@ -31,13 +31,31 @@ d3.csv('data/games_per_year.csv').then(data => {
     let yearIndex = 0;
     let isPaused = false;
 
-    function update(year) {
+    // Create a dropdown for team selection
+    const teams = Array.from(new Set(data.map(d => d.team)));
+    const teamDropdown = d3.select("#teamDropdown");
+
+    teams.forEach(team => {
+        teamDropdown.append("option").attr("value", team).text(team);
+    });
+
+    function update(year, selectedTeam = "Overall") {
         yearDisplay.text(`Year: ${year}`);
 
         console.log("Updating for year:", year);
 
         // Filter the data up to the current year
-        const yearData = data.filter(d => d.year.getFullYear() <= year);
+        let yearData;
+        if (selectedTeam === "Overall") {
+            const overallData = d3.groups(data.filter(d => d.year.getFullYear() <= year), d => d.year)
+                .map(([key, values]) => ({
+                    year: new Date(key),
+                    number_of_games: d3.sum(values, v => v.number_of_games)
+                }));
+            yearData = overallData;
+        } else {
+            yearData = data.filter(d => d.team === selectedTeam && d.year.getFullYear() <= year);
+        }
         console.log("Filtered year data:", yearData);  // Debugging
 
         x.domain(d3.extent(yearData, d => d.year));
@@ -92,12 +110,12 @@ d3.csv('data/games_per_year.csv').then(data => {
 
     function nextYear() {
         yearIndex = (yearIndex + 1) % years.length;
-        update(years[yearIndex]);
+        update(years[yearIndex], teamDropdown.node().value);
     }
 
     function prevYear() {
         yearIndex = (yearIndex - 1 + years.length) % years.length;
-        update(years[yearIndex]);
+        update(years[yearIndex], teamDropdown.node().value);
     }
 
     let interval;
@@ -127,6 +145,11 @@ d3.csv('data/games_per_year.csv').then(data => {
     // Home button functionality
     d3.select("#home").on("click", () => {
         window.location.href = "index.html";
+    });
+
+    // Update chart on team selection change
+    teamDropdown.on("change", () => {
+        update(years[yearIndex], teamDropdown.node().value);
     });
 
     update(years[yearIndex]);  // Initial update with a starting year

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games Per Year</title>
-    <link rel="stylesheet" href="css/styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -48,10 +47,17 @@
             border-radius: 8px;
             pointer-events: none;
         }
-    </style>    
+        #teamDropdown {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
     <h1>Games Per Year</h1>
+    <select id="teamDropdown">
+        <option value="Overall">Overall</option>
+    </select>
     <div id="controls">
         <button id="home">Home</button>
         <button id="prev">Previous</button>
@@ -59,10 +65,9 @@
         <button id="play">Play</button>
         <button id="next">Next</button>
     </div>
-    <div id="yearDisplay"></div>
-    <svg id="gamesPerYear" width="960" height="600"></svg>
+    <div id="yearDisplay">Year:</div>
+    <svg id="gamesPerYear" width="960" height="500"></svg>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="js/common.js"></script>
-    <script src="js/games_per_year.js"></script>
+    <script src="games_per_year.js"></script>
 </body>
 </html>
