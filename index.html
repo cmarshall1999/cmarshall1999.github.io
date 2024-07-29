@@ -13,39 +13,59 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
+            background: #f0f0f0;
+            padding: 20px;
         }
         h1 {
             text-align: center;
-            margin-bottom: 20px;
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        h3 {
+            text-align: center;
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 10px 0;
+            line-height: 1.5;
         }
         p {
             text-align: center;
-            margin: 0 20px 20px 20px;
-            font-size: 18px;
+            font-size: 1em;
+            max-width: 800px;
+            margin: 5px 0;
+            line-height: 1.5;
         }
-        img {
-            max-width: 80%;
-            height: auto;
-            margin-bottom: 20px;
+        #navigation {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
         }
-        .button {
+        #navigation button {
+            margin: 0 10px;
             padding: 10px 20px;
             font-size: 16px;
-            text-decoration: none;
-            background-color: #4CAF50;
+            background: #007BFF;
             color: white;
+            border: none;
             border-radius: 5px;
-            margin: 10px;
+            cursor: pointer;
         }
-        .button:hover {
-            background-color: #45a049;
+        #navigation button:hover {
+            background: #0056b3;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
     <h1>Welcome to the Soccer History Visualization</h1>
     <img src="data/humberto-santos-KDZW-_fMsuM-unsplash.jpg" alt="Soccer Stadium">
-    <p>This website provides a visual representation of soccer history, showcasing various metrics and statistics over the years. Explore the interactive charts to see the progression of games, unique teams, and top goal scorers throughout soccer history. Use the navigation buttons to view different aspects of the data and watch how the beautiful game has evolved over time.</p>
+    <h3>This website provides a visual representation of soccer history, showcasing various metrics and statistics over the years. Explore the interactive charts to see the progression of games, unique teams, and top goal scorers throughout soccer history. Use the navigation buttons to view different aspects of the data and watch how the beautiful game has evolved over time.</h3>
+    <p>Click the "Next" button to continue exploring.</p>
     <a href="unique_teams_per_year.html" class="button">Next Page: Number of Teams over the Years</a>
 </body>
 </html>
