@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unique Teams Per Year</title>
-    <link rel="stylesheet" href="css/styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,12 +17,12 @@
         h1 {
             text-align: center;
         }
-        #controls {
+        #controls, #navigation {
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
         }
-        #controls button {
+        #controls button, #navigation button {
             margin: 0 10px;
             padding: 10px 20px;
             font-size: 16px;
@@ -48,21 +47,24 @@
             border-radius: 8px;
             pointer-events: none;
         }
-    </style>    
+    </style>
 </head>
 <body>
     <h1>Unique Teams Per Year</h1>
     <div id="controls">
-        <button id="home">Home</button>
-        <button id="prev">Previous</button>
         <button id="pause">Pause</button>
         <button id="play">Play</button>
-        <button id="next">Next</button>
+        <button id="prevYear">Previous</button>
+        <button id="nextYear">Next</button>
     </div>
-    <div id="yearDisplay"></div>
-    <svg id="uniqueTeamsPerYear" width="960" height="600"></svg>
+    <div id="yearDisplay">Year:</div>
+    <svg id="uniqueTeamsPerYear" width="960" height="500"></svg>
+    <div id="navigation">
+        <button id="home">Home</button>
+        <button id="prevPage">Previous Page</button>
+        <button id="nextPage">Next Page</button>
+    </div>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="js/common.js"></script>
     <script src="js/unique_teams_per_year.js"></script>
 </body>
 </html>

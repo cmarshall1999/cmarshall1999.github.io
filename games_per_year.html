@@ -17,12 +17,12 @@
         h1 {
             text-align: center;
         }
-        #controls {
+        #controls, #navigation {
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
         }
-        #controls button, #teamDropdown {
+        #controls button, #navigation button, #teamDropdown {
             margin: 0 10px;
             padding: 10px 20px;
             font-size: 16px;
@@ -54,11 +54,13 @@
     <select id="teamDropdown">
         <option value="Overall">Overall</option>
     </select>
-    <div id="controls">
-        <button id="home">Home</button>
-    </div>
     <div id="yearDisplay">Year: All</div>
     <svg id="gamesPerYear" width="960" height="500"></svg>
+    <div id="navigation">
+        <button id="home">Home</button>
+        <button id="prevPage">Previous Page</button>
+        <button id="nextPage">Next Page</button>
+    </div>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="js/games_per_year.js"></script>
 </body>

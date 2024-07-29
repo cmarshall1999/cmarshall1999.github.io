@@ -124,9 +124,14 @@ d3.csv('data/unique_teams_per_year.csv').then(data => {
         play();
     });
 
-    // Home button functionality
     d3.select("#home").on("click", () => {
         window.location.href = "index.html";
+    });
+    d3.select("#prevPage").on("click", () => {
+        window.location.href = "index.html";
+    });
+    d3.select("#nextPage").on("click", () => {
+        window.location.href = "games_per_year.html";
     });
 
     update(years[yearIndex]);  // Initial update with a starting year

@@ -107,9 +107,14 @@ d3.csv('data/games_per_year.csv').then(data => {
         update(teamDropdown.node().value);
     });
 
-    // Home button functionality
     d3.select("#home").on("click", () => {
         window.location.href = "index.html";
+    });
+    d3.select("#prevPage").on("click", () => {
+        window.location.href = "unique_teams_per_year.html";
+    });
+    d3.select("#nextPage").on("click", () => {
+        window.location.href = "top_goal_scorers.html";
     });
 
     update();  // Initial update with "Overall" selected

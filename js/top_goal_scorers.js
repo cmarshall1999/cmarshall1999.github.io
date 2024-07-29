@@ -135,6 +135,12 @@ d3.json('data/top_goal_scorers_cumulative_goals_by_year.json').then(data => {
     d3.select("#home").on("click", () => {
         window.location.href = "index.html";
     });
+    d3.select("#prevPage").on("click", () => {
+        window.location.href = "games_per_year.html";
+    });
+    d3.select("#nextPage").on("click", () => {
+        window.location.href = "index.html";
+    });
 
     update(years[yearIndex]);
     play();

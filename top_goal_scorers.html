@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Top Goal Scorers</title>
-    <link rel="stylesheet" href="css/styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,12 +17,12 @@
         h1 {
             text-align: center;
         }
-        #controls {
+        #controls, #navigation {
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
         }
-        #controls button {
+        #controls button, #navigation button {
             margin: 0 10px;
             padding: 10px 20px;
             font-size: 16px;
@@ -33,30 +32,39 @@
             font-size: 24px;
             margin-bottom: 20px;
         }
-        #annotation {
-            text-align: center;
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
         svg {
             margin: auto;
+        }
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            width: auto;
+            height: auto;
+            padding: 5px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
     <h1>Top Goal Scorers</h1>
     <div id="controls">
-        <button id="home">Home</button>
-        <button id="prev">Previous</button>
         <button id="pause">Pause</button>
         <button id="play">Play</button>
-        <button id="next">Next</button>
+        <button id="prevYear">Previous</button>
+        <button id="nextYear">Next</button>
     </div>
-    <div id="yearDisplay"></div>
-    <div id="annotation"></div>
-    <svg id="topGoalScorers" width="960" height="600"></svg>
+    <div id="yearDisplay">Year:</div>
+    <svg id="topGoalScorers" width="960" height="500"></svg>
+    <div id="navigation">
+        <button id="home">Home</button>
+        <button id="prevPage">Previous Page</button>
+        <button id="nextPage">Next Page</button>
+    </div>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="js/common.js"></script>
-    <script src="js/top_goal_scorers.js"></script>
+    <script src="top_goal_scorers.js"></script>
 </body>
 </html>
