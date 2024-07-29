@@ -27,10 +27,6 @@ d3.csv('data/games_per_year.csv').then(data => {
 
     const yearDisplay = d3.select("#yearDisplay");
 
-    const years = [1880, 1890, 1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020, 2024];
-    let yearIndex = 0;
-    let isPaused = false;
-
     // Create a dropdown for team selection
     const teams = Array.from(new Set(data.map(d => d.team)));
     const teamDropdown = d3.select("#teamDropdown");
@@ -39,27 +35,25 @@ d3.csv('data/games_per_year.csv').then(data => {
         teamDropdown.append("option").attr("value", team).text(team);
     });
 
-    function update(year, selectedTeam = "Overall") {
-        yearDisplay.text(`Year: ${year}`);
+    function update(selectedTeam = "Overall") {
+        console.log("Updating for team:", selectedTeam);
 
-        console.log("Updating for year:", year);
-
-        // Filter the data up to the current year
-        let yearData;
+        // Filter the data for the selected team
+        let filteredData;
         if (selectedTeam === "Overall") {
-            const overallData = d3.groups(data.filter(d => d.year.getFullYear() <= year), d => d.year)
+            const overallData = d3.groups(data, d => d.year)
                 .map(([key, values]) => ({
                     year: new Date(key),
                     number_of_games: d3.sum(values, v => v.number_of_games)
                 }));
-            yearData = overallData;
+            filteredData = overallData;
         } else {
-            yearData = data.filter(d => d.team === selectedTeam && d.year.getFullYear() <= year);
+            filteredData = data.filter(d => d.team === selectedTeam);
         }
-        console.log("Filtered year data:", yearData);  // Debugging
+        console.log("Filtered data:", filteredData);  // Debugging
 
-        x.domain(d3.extent(yearData, d => d.year));
-        y.domain([0, d3.max(yearData, d => d.number_of_games)]);
+        x.domain(d3.extent(filteredData, d => d.year));
+        y.domain([0, d3.max(filteredData, d => d.number_of_games)]);
 
         g.selectAll("*").remove();  // Clear previous content
 
@@ -78,7 +72,7 @@ d3.csv('data/games_per_year.csv').then(data => {
             .text("Number of Games");
 
         g.append("path")
-            .datum(yearData)
+            .datum(filteredData)
             .attr("fill", "none")
             .attr("stroke", "steelblue")
             .attr("stroke-linejoin", "round")
@@ -87,7 +81,7 @@ d3.csv('data/games_per_year.csv').then(data => {
             .attr("d", line);
 
         g.selectAll("circle")
-            .data(yearData)
+            .data(filteredData)
             .enter().append("circle")
             .attr("cx", d => x(d.year))
             .attr("cy", d => y(d.number_of_games))
@@ -108,38 +102,9 @@ d3.csv('data/games_per_year.csv').then(data => {
             });
     }
 
-    function nextYear() {
-        yearIndex = (yearIndex + 1) % years.length;
-        update(years[yearIndex], teamDropdown.node().value);
-    }
-
-    function prevYear() {
-        yearIndex = (yearIndex - 1 + years.length) % years.length;
-        update(years[yearIndex], teamDropdown.node().value);
-    }
-
-    let interval;
-    function play() {
-        if (interval) clearInterval(interval);
-        interval = setInterval(() => {
-            if (!isPaused) {
-                nextYear();
-            }
-        }, 2000);
-    }
-
-    function pause() {
-        isPaused = !isPaused;
-        d3.select("#pause").text(isPaused ? "Resume" : "Pause");
-    }
-
-    d3.select("#prev").on("click", prevYear);
-    d3.select("#next").on("click", nextYear);
-    d3.select("#pause").on("click", pause);
-    d3.select("#play").on("click", () => {
-        isPaused = false;
-        d3.select("#pause").text("Pause");
-        play();
+    // Update chart on team selection change
+    teamDropdown.on("change", () => {
+        update(teamDropdown.node().value);
     });
 
     // Home button functionality
@@ -147,11 +112,7 @@ d3.csv('data/games_per_year.csv').then(data => {
         window.location.href = "index.html";
     });
 
-    // Update chart on team selection change
-    teamDropdown.on("change", () => {
-        update(years[yearIndex], teamDropdown.node().value);
-    });
-
-    update(years[yearIndex]);  // Initial update with a starting year
-    play();
-}).catch(showError);
+    update();  // Initial update with "Overall" selected
+}).catch(error => {
+    console.error("Error loading the data:", error);
+});
