@@ -115,8 +115,8 @@ d3.csv('data/unique_teams_per_year.csv').then(data => {
         d3.select("#pause").text(isPaused ? "Resume" : "Pause");
     }
 
-    d3.select("#prev").on("click", prevYear);
-    d3.select("#next").on("click", nextYear);
+    d3.select("#prevYear").on("click", prevYear);
+    d3.select("#nextYear").on("click", nextYear);
     d3.select("#pause").on("click", pause);
     d3.select("#play").on("click", () => {
         isPaused = false;
