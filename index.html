@@ -4,16 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soccer History Visualization</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        p {
+            text-align: center;
+            margin: 0 20px 20px 20px;
+            font-size: 18px;
+        }
+        img {
+            max-width: 80%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            text-decoration: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <h1>Soccer History Visualization</h1>
-    <nav>
-        <ul>
-            <li><a href="unique_teams_per_year.html">Unique Teams Per Year</a></li>
-            <li><a href="games_per_year.html">Games Per Year</a></li>
-            <li><a href="top_goal_scorers.html">Top Goal Scorers</a></li>
-        </ul>
-    </nav>
+    <h1>Welcome to the Soccer History Visualization</h1>
+    <img src="data/humberto-santos-KDZW-_fMsuM-unsplash.jpg" alt="Soccer Stadium">
+    <p>This website provides a visual representation of international soccer history, showcasing various metrics and statistics over the years. Explore the interactive charts to see the progression of games, unique teams, and top goal scorers throughout soccer history. Use the navigation buttons to view different aspects of the data and watch how the beautiful game has evolved over time.</p>
+    <a href="games_per_year.html" class="button">Explore Games Per Year</a>
+    <a href="unique_teams_per_year.html" class="button">Explore Unique Teams Per Year</a>
+    <a href="top_goal_scorers.html" class="button">Explore Top Goal Scorers</a>
 </body>
 </html>
