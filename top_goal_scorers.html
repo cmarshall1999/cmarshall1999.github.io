@@ -10,36 +10,29 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: flex-start;
+            min-height: 100vh;
             margin: 0;
             padding: 20px;
             background: #f0f0f0;
-            overflow-y: auto; /* Enable vertical scrolling */
+            overflow-y: auto;
         }
         h1 {
             text-align: center;
-            font-size: 2em;
-            margin-bottom: 5px;
+            font-size: 2.5em;
+            margin-bottom: 10px;
         }
-        h3 {
+        h3, p {
             text-align: center;
-            font-size: 1em;
-            max-width: 1000px;
-            margin: 5px 0;
-            line-height: 1.5;
-        }
-        p {
-            text-align: center;
-            font-size: 0.8em;
-            max-width: 1000px;
-            margin: 2px 0;
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 10px 0;
             line-height: 1.5;
         }
         #controls, #navigation {
             display: flex;
             justify-content: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
         #controls button, #navigation button {
             margin: 0 10px;
@@ -56,15 +49,14 @@
         }
         #yearDisplay {
             text-align: center;
-            font-size: 20px;
-            margin-bottom: 10px;
+            font-size: 24px;
+            margin-bottom: 20px;
             font-weight: bold;
         }
         svg {
-            margin: auto;
             background: white;
             border: 1px solid #ccc;
-            height: 700px; /* Increase height for better visualization */
+            margin-bottom: 20px;
         }
         .tooltip {
             position: absolute;
@@ -83,22 +75,22 @@
 <body>
     <h1>Top Goal Scorers</h1>
     <h3>
-        This page allows you to explore the top goals scorers in soccer history! Enjoy some of the most prolific goalscorers on international stage including Cristiano Ronaldo, Leo Messi, Pele, and Gerd Muller.
+        This page allows you to explore the top goal scorers in soccer history! Enjoy some of the most prolific goal scorers on the international stage including Cristiano Ronaldo, Leo Messi, Pele, and Gerd Muller.
     </h3>
     <p>
-        Tip: This chart can be watched or user controlled with the "Pause", "Play", "Previous" and "Next" buttons!
+        Tip: This chart can be watched or user controlled with the "Pause", "Play", "Previous", and "Next" buttons!
     </p>
     <p>
         Tip: Navigate through the rest of the scenes using the "Home", "Previous Page", and "Next Page" buttons.
     </p>
-    <div id="yearDisplay">Year:</div>
     <div id="controls">
         <button id="pause">Pause</button>
         <button id="play">Play</button>
         <button id="prevYear">Previous</button>
         <button id="nextYear">Next</button>
     </div>
-    <svg id="topGoalScorers" width="768" height="400"></svg>
+    <div id="yearDisplay">Year:</div>
+    <svg id="topGoalScorers" width="960" height="600"></svg>
     <div id="navigation">
         <button id="home">Home</button>
         <button id="prevPage">Previous Page: Games Per Year</button>
